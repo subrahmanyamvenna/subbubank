@@ -113,7 +113,13 @@ SIMPLE_JWT = {
 }
 
 # CORS — allow frontend origins
-CORS_ALLOWED_ORIGINS = os.environ.get(
-    'CORS_ALLOWED_ORIGINS', 'http://localhost:5173,http://127.0.0.1:5173'
+_cors_origins = os.environ.get(
+    'CORS_ALLOWED_ORIGINS',
+    'http://localhost:5173,http://127.0.0.1:5173,https://subbubank.vercel.app'
 ).split(',')
+# Always include the Vercel frontend
+if 'https://subbubank.vercel.app' not in _cors_origins:
+    _cors_origins.append('https://subbubank.vercel.app')
+CORS_ALLOWED_ORIGINS = _cors_origins
 CORS_ALLOW_ALL_ORIGINS = DEBUG
+

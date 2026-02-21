@@ -42,8 +42,8 @@ const api = {
             if (!response.ok) throw await this.parseError(response);
             return response.json();
         } catch (error) {
-            if (error.message === 'Failed to fetch') {
-                throw { detail: 'Cannot connect to server. Is the backend running on port 8000?' };
+            if (error.message === 'Failed to fetch' || error.name === 'TypeError') {
+                throw { detail: 'Server is waking up (free tier). Please wait 30 seconds and try again.' };
             }
             throw error;
         }
