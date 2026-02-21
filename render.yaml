@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "services": [
+    {
+      "type": "web",
+      "runtime": "python",
+      "name": "subbu-bank-api",
+      "buildCommand": "bash build.sh",
+      "startCommand": "cd backend && gunicorn subbu_bank.wsgi:application --bind 0.0.0.0:$PORT",
+      "envVars": [
+        { "key": "DJANGO_SECRET_KEY", "generateValue": true },
+        { "key": "DEBUG", "value": "False" },
+        { "key": "ALLOWED_HOSTS", "value": ".onrender.com" },
+        { "key": "CORS_ALLOWED_ORIGINS", "value": "https://your-frontend.vercel.app" }
+      ]
+    }
+  ],
+  "databases": [
+    {
+      "name": "subbu-bank-db",
+      "plan": "free",
+      "engine": "postgres"
+    }
+  ]
+}
