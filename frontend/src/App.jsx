@@ -6,6 +6,7 @@ import Dashboard from './pages/Dashboard';
 import Accounts from './pages/Accounts';
 import Statements from './pages/Statements';
 import Services from './pages/Services';
+import Transactions from './pages/Transactions';
 import ManageUsers from './pages/ManageUsers';
 import AllCustomers from './pages/AllCustomers';
 
@@ -18,6 +19,7 @@ export default function App() {
           <Route element={<AppLayout />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/accounts" element={<Accounts />} />
+            <Route path="/transactions" element={<Transactions />} />
             <Route path="/statements" element={<Statements />} />
             <Route path="/services" element={<Services />} />
             <Route path="/manage-users" element={<ManageUsers />} />

@@ -16,6 +16,8 @@ urlpatterns = [
     # Customer → Accounts & Transactions
     path('accounts/', views.AccountListView.as_view(), name='account-list'),
     path('transactions/', views.TransactionListView.as_view(), name='transaction-list'),
+    path('deposit/', views.deposit, name='deposit'),
+    path('withdraw/', views.withdraw, name='withdraw'),
 
     # Customer → Service Requests
     path('services/', views.ServiceRequestListCreateView.as_view(), name='service-list-create'),

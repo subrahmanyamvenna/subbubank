@@ -73,3 +73,17 @@ class ServiceRequestSerializer(serializers.ModelSerializer):
         fields = ['id', 'service_type', 'service_type_display', 'status',
                   'status_display', 'remarks', 'created_at', 'updated_at']
         read_only_fields = ['id', 'status', 'created_at', 'updated_at']
+
+
+class DepositSerializer(serializers.Serializer):
+    """Serializer for deposit requests."""
+    account_id = serializers.IntegerField()
+    amount = serializers.DecimalField(max_digits=12, decimal_places=2, min_value=1)
+    description = serializers.CharField(max_length=255, required=False, default='Cash Deposit')
+
+
+class WithdrawSerializer(serializers.Serializer):
+    """Serializer for withdrawal requests."""
+    account_id = serializers.IntegerField()
+    amount = serializers.DecimalField(max_digits=12, decimal_places=2, min_value=1)
+    description = serializers.CharField(max_length=255, required=False, default='Cash Withdrawal')

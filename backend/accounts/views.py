@@ -3,12 +3,13 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.db.models import Sum, Count
+from django.db import transaction
 
 from .models import User, Account, Transaction, ServiceRequest
 from .serializers import (
     UserSerializer, CreateUserSerializer,
     AccountSerializer, TransactionSerializer,
-    ServiceRequestSerializer,
+    ServiceRequestSerializer, DepositSerializer, WithdrawSerializer,
 )
 from .permissions import IsSuperAdmin, IsRelationshipManager, IsCustomer, IsSuperAdminOrRM
 
@@ -183,3 +184,75 @@ def rm_customer_accounts(request, customer_id):
     accounts = Account.objects.filter(user=customer)
     serializer = AccountSerializer(accounts, many=True)
     return Response(serializer.data)
+
+
+# ─── Customer: Deposit ──────────────────────────────────────────────
+@api_view(['POST'])
+@permission_classes([IsCustomer])
+def deposit(request):
+    """Customer deposits money into their own account."""
+    serializer = DepositSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    account_id = serializer.validated_data['account_id']
+    amount = serializer.validated_data['amount']
+    description = serializer.validated_data['description']
+
+    try:
+        account = Account.objects.get(id=account_id, user=request.user, is_active=True)
+    except Account.DoesNotExist:
+        return Response({'detail': 'Account not found or not active.'}, status=404)
+
+    with transaction.atomic():
+        account.balance += amount
+        account.save()
+        txn = Transaction.objects.create(
+            account=account,
+            transaction_type='credit',
+            amount=amount,
+            balance_after=account.balance,
+            description=description,
+        )
+    return Response({
+        'detail': f'₹{amount} deposited successfully.',
+        'transaction': TransactionSerializer(txn).data,
+        'new_balance': str(account.balance),
+    })
+
+
+# ─── Customer: Withdraw ─────────────────────────────────────────────
+@api_view(['POST'])
+@permission_classes([IsCustomer])
+def withdraw(request):
+    """Customer withdraws money from their own account."""
+    serializer = WithdrawSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    account_id = serializer.validated_data['account_id']
+    amount = serializer.validated_data['amount']
+    description = serializer.validated_data['description']
+
+    try:
+        account = Account.objects.get(id=account_id, user=request.user, is_active=True)
+    except Account.DoesNotExist:
+        return Response({'detail': 'Account not found or not active.'}, status=404)
+
+    if account.balance < amount:
+        return Response(
+            {'detail': f'Insufficient balance. Available: ₹{account.balance}'},
+            status=400
+        )
+
+    with transaction.atomic():
+        account.balance -= amount
+        account.save()
+        txn = Transaction.objects.create(
+            account=account,
+            transaction_type='debit',
+            amount=amount,
+            balance_after=account.balance,
+            description=description,
+        )
+    return Response({
+        'detail': f'₹{amount} withdrawn successfully.',
+        'transaction': TransactionSerializer(txn).data,
+        'new_balance': str(account.balance),
+    })

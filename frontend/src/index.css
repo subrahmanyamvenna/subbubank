@@ -1039,3 +1039,251 @@ a:hover {
   grid-template-columns: 1fr 1fr;
   gap: 12px;
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   TRANSACTIONS PAGE
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Tab Switcher */
+.txn-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+
+.txn-tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 24px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  background: var(--bg-glass);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.txn-tab:hover {
+  background: var(--bg-glass-hover);
+  color: var(--text-primary);
+}
+
+.txn-tab.active.deposit {
+  background: rgba(34, 197, 94, 0.1);
+  border-color: rgba(34, 197, 94, 0.4);
+  color: var(--green);
+  box-shadow: 0 4px 20px rgba(34, 197, 94, 0.15);
+}
+
+.txn-tab.active.withdraw {
+  background: rgba(249, 115, 22, 0.1);
+  border-color: rgba(249, 115, 22, 0.4);
+  color: var(--orange);
+  box-shadow: 0 4px 20px rgba(249, 115, 22, 0.15);
+}
+
+.txn-tab-icon {
+  font-size: 20px;
+}
+
+/* Layout */
+.txn-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .txn-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Form Card */
+.txn-form-card {
+  padding: 32px;
+  background: var(--bg-glass);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-xl);
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.txn-form-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--gradient-gold);
+  transition: var(--transition);
+}
+
+.txn-form-card.deposit::before {
+  background: linear-gradient(90deg, #22c55e, #4ade80);
+}
+
+.txn-form-card.withdraw::before {
+  background: linear-gradient(90deg, #f97316, #fb923c);
+}
+
+.txn-form-header {
+  margin-bottom: 24px;
+}
+
+.txn-form-header h2 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.txn-form-header p {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* Balance Preview */
+.txn-balance-preview {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: var(--gradient-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  margin-bottom: 24px;
+}
+
+.txn-balance-label {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.txn-balance-value {
+  font-size: 22px;
+  font-weight: 800;
+  background: var(--gradient-gold);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Submit Button Colors */
+.txn-submit.deposit {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  box-shadow: 0 4px 20px rgba(34, 197, 94, 0.2);
+}
+
+.txn-submit.deposit:hover {
+  box-shadow: 0 8px 30px rgba(34, 197, 94, 0.3);
+}
+
+.txn-submit.withdraw {
+  background: linear-gradient(135deg, #f97316, #ea580c);
+  box-shadow: 0 4px 20px rgba(249, 115, 22, 0.2);
+}
+
+.txn-submit.withdraw:hover {
+  box-shadow: 0 8px 30px rgba(249, 115, 22, 0.3);
+}
+
+/* Right Column */
+.txn-right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Success Card */
+.txn-success-card {
+  padding: 32px;
+  text-align: center;
+  background: var(--bg-glass);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  border-radius: var(--radius-xl);
+  animation: successPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.txn-success-card.withdraw {
+  border-color: rgba(249, 115, 22, 0.3);
+}
+
+@keyframes successPop {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.txn-success-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+  animation: bounceIn 0.6s ease-out;
+}
+
+@keyframes bounceIn {
+  0% { transform: scale(0); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.txn-success-card h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--green);
+  margin-bottom: 12px;
+}
+
+.txn-success-card.withdraw h3 {
+  color: var(--orange);
+}
+
+.txn-success-amount {
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.txn-success-card.deposit .txn-success-amount {
+  color: var(--green);
+}
+
+.txn-success-card.withdraw .txn-success-amount {
+  color: var(--orange);
+}
+
+.txn-success-balance {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.txn-success-balance strong {
+  color: var(--text-primary);
+}
+
+.txn-success-ref {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-family: 'Courier New', monospace;
+  letter-spacing: 1px;
+}

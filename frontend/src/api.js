@@ -93,6 +93,8 @@ const api = {
     createService(data) { return this.request('/services/', { method: 'POST', body: JSON.stringify(data) }); },
     getAllCustomers() { return this.request('/all-customers/'); },
     getCustomerAccounts(id) { return this.request(`/customers/${id}/accounts/`); },
+    deposit(data) { return this.request('/deposit/', { method: 'POST', body: JSON.stringify(data) }); },
+    withdraw(data) { return this.request('/withdraw/', { method: 'POST', body: JSON.stringify(data) }); },
 };
 
 export default api;

@@ -55,6 +55,7 @@ function getNavItems(role) {
         items.push({ icon: '👤', label: 'My Customers', path: '/manage-users' });
     } else if (role === 'customer') {
         items.push({ icon: '🏦', label: 'My Accounts', path: '/accounts' });
+        items.push({ icon: '💸', label: 'Transact', path: '/transactions' });
         items.push({ icon: '📜', label: 'Statements', path: '/statements' });
         items.push({ icon: '🛎️', label: 'Services', path: '/services' });
     }
